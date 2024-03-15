@@ -1,8 +1,11 @@
 package br.ufrn.imd.socket;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
 	private Socket socket;
@@ -13,9 +16,12 @@ public class Client {
 	}
 	
 	public void sendMessage(String msg) throws Exception {
-		System.out.println("Sending message to the server");
 		PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 		writer.println(msg);
+
+		ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+		String message = (String) ois.readObject();
+		System.out.println(message);
 	}
 	
 	public void close() {
@@ -32,7 +38,18 @@ public class Client {
 		Client client = new Client();
 		try {
 			client.init();
-			client.sendMessage("Hello World");
+
+			Scanner scanner = new Scanner(System.in);
+
+			String input = scanner.nextLine();
+
+			while(!input.equalsIgnoreCase("quit")) {
+				client.sendMessage(input);
+
+				input = scanner.nextLine();
+			}
+
+			System.out.println("End session!!");
 			
 		}catch(Exception e) {
 			client.close();
