@@ -71,7 +71,7 @@ public class ServerChatbot {
 	}
 
 	public static void main(String[] args) throws IOException {
-		ServerChatbot server = new ServerChatbot(6070);  // Certifique-se de que 6070 é a porta correta
+		ServerChatbot server = new ServerChatbot(6070);
 		server.start();
 	}
 }
